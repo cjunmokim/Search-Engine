@@ -19,13 +19,13 @@ Crawler
 Compiling
 ---------
 
-Crawler can be compiled by running "make" in the Lab6/Crawler folder.
+Crawler can be compiled by running "make" in the ./crawler folder.
 
 --------
 Building
 --------
 
-Crawler can be built as follows: crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 3
+Crawler can be built as follows (within ./crawler folder): crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 3
 Or, CrawlerTest.sh can be run.
 
 ---------------------
@@ -56,7 +56,7 @@ Assumptions / Disclaimers
 	1		7
 	2		1705
 	3		1705
-For more detailed assumptions / disclaimers, refer to the README in lab5/crawler.
+For more detailed assumptions / disclaimers, refer to the README in ./crawler.
 
 
 
@@ -68,13 +68,13 @@ Indexer
 Compiling
 ---------
 
-Indexer can be compiled by running "make" in the Lab6/Indexer folder.
+Indexer can be compiled by running "make" in the ./indexer folder.
 
 --------
 Building
 --------
 
-Indexer can be built as follows: indexer ~/cs50/labs/lab6/crawler/data index.dat [new_index.dat]
+Indexer can be built as follows (within ./indexer folder): indexer ../crawler/data index.dat [new_index.dat]
 Or, BATS.sh can be run.
 
 ---------------------
@@ -106,7 +106,7 @@ The program prints out a warning message and overwrites the files.
 6. I assumed that the "index.dat" file and the "new_index.dat" file both have the necessary
 permissions (read and write).
 
-For more detailed assumptions / disclaimers, refer to the README in lab5/indexer.
+For more detailed assumptions / disclaimers, refer to the README in ./indexer.
 
 
 
@@ -116,13 +116,13 @@ Query
 Compiling
 ---------
 
-Query can be compiled by running "make" in the Lab6/query folder.
+Query can be compiled by running "make" in the ./query folder.
 
 --------
 Building
 --------
 
-Query can be built as follows: query ~/cs50/labs/lab6/indexer/index.dat ~/cs50/labs/lab6/crawler/data
+Query can be built as follows (within ./query folder): query ../indexer/index.dat ../crawler/data
 Or, QEBATS.sh can be run.
 
 
