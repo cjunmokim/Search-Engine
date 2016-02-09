@@ -1,0 +1,175 @@
+Tiny Search Engine README
+
+Tiny Search Engine works as a miniature version of search engines like Google.
+It has three components to it: the crawler, the indexer, and the query.
+
+---------
+Breakdown
+---------
+
+Crawler --> crawls all webpages from a seed URL and writes a file for each.
+Indexer --> takes in each crawled url file, creates an Inverted Index, and saves the index to a file for easy access.
+Query --> creates a command-line query processor and a simple ranking system.
+
+
+
+Crawler
+
+---------
+Compiling
+---------
+
+Crawler can be compiled by running "make" in the Lab6/Crawler folder.
+
+--------
+Building
+--------
+
+Crawler can be built as follows: crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 3
+Or, CrawlerTest.sh can be run.
+
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are three input parameters.
+2. This program checks that the seed url has the proper domain.
+3. This program checks that the directory exists.
+4. This program checks that the directory path doesn't include the final '/' (for creating filename purposes).
+5. This program checks that the depth passed is a number.
+6. This program checks that the depth passed is equal to or less than the MAX DEPTH.
+7. This program checks that seed URL is a valid email address.
+8. This program checks that the seed URL can be normalized.
+
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that for the seed URL, the user would input a url ending with a '/'.
+2. I assumed that the directory passed has the read and write permissions.
+3. I assumed that the directory passed is empty.
+4. I added an additional '/' to the constant URL_PREFIX.
+5. I fixed the given html parser for redirection and references to different parts of the html page.
+	Therefore, I should get the following number of files for each depth: 
+	0		1
+	1		7
+	2		1705
+	3		1705
+For more detailed assumptions / disclaimers, refer to the README in lab5/crawler.
+
+
+
+
+Indexer
+
+
+---------
+Compiling
+---------
+
+Indexer can be compiled by running "make" in the Lab6/Indexer folder.
+
+--------
+Building
+--------
+
+Indexer can be built as follows: indexer ~/cs50/labs/lab6/crawler/data index.dat [new_index.dat]
+Or, BATS.sh can be run.
+
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are either 2 or 3 arguments passed.
+2. This program checks that the TARGET_DIRECTORY exists.
+3. This program checks that the TARGET_DIRECTORY is not empty.
+4. This program checks that the "index.dat" and the "new_index.dat" files are valid (ie, they exist).
+5. This program checks that the "index.dat" and the "new_index.dat" files are empty.
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that the crawler ran successfully, stored all the webpages into ./data, 
+and each file name is a unique integer starting from 1. I copied over the crawler code to 
+Lab5/Crawler. 
+
+2. Just like in Crawler, I assumed that the ./data directory does not have a final '/' at the end.
+The crawler and the indexer add a '/' at the end when parsing.
+
+3. I assumed that the ./data directory has read permissions and can be opened.
+
+4. I assumed that the "index.dat" and the "new_index.dat" files are empty, or if not, that their contents are not important.
+The program prints out a warning message and overwrites the files.
+
+6. I assumed that the "index.dat" file and the "new_index.dat" file both have the necessary
+permissions (read and write).
+
+For more detailed assumptions / disclaimers, refer to the README in lab5/indexer.
+
+
+
+Query
+
+---------
+Compiling
+---------
+
+Query can be compiled by running "make" in the Lab6/query folder.
+
+--------
+Building
+--------
+
+Query can be built as follows: query ~/cs50/labs/lab6/indexer/index.dat ~/cs50/labs/lab6/crawler/data
+Or, QEBATS.sh can be run.
+
+
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are 2 arguments passed.
+2. This program checks that the [INDEX_FILE] exists.
+3. This program checks that the [HTML_DIRECTORY] exists.
+4. This program checks that the query line is not empty.
+5. This program checks that the query line only contains ASCII characters separated by one whitespace.
+6. This program checks for invalid input cases regarding logical operators 
+	•	successive logical operators
+	•	operator in the beginning of the query line
+	•	operator at the end of the query line
+
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that the Indexer ran successfully, and that the [INDEX_FILE] passed contains
+a working InvertedIndex. This [INDEX_FILE] is stored in Lab6/Indexer/.
+
+2. I assumed that the Crawler ran successfully, that ./data contains all 1705 crawled webpage files,
+and that each file name is a unique integer starting from 1. This [HTML_DIRECTORY] is stored in
+Lab6/Crawler/. 
+
+3. I assumed that [HTML_DIRECTORY] will be inputted without the final '/' for correct parsing.
+
+4. I assumed that the [INDEX_FILE] and the [HTML_DIRECTORY] both have appropriate permissions.
+
+5. I assumed that each query follows the following format: word1 [OPERATOR] word 2 etc.
+I assumed that each word or operator is separated by one whitespace ' '.
+
+6. To compute rank for words joined by AND, I added the frequencies up.
+
+7. To compute rank for words joined by OR, I took the maximum of the frequencies.
+
+8. The query line can be at most 1000 characters long.
+
+9. Since crawler, indexer, and query use common files, but with minor changes, I had to
+to change the names of a few in order to make them from a single Makefile. For such files, 
+I put a 'c', 'i', and 'q' to indicate the files are for crawler, indexer, and query 
+respectively. For example, for query, hashtable.c --> qhashtable.c.
+
+10. In my Unit Testing file, queryengine_test.c, I test my display() function that displays
+list of matching doc ids and urls to stdout. I did not mute the output to stdout, so 
+in the output of queryengine_test.c, please ignore the three lines of doc ids & urls.

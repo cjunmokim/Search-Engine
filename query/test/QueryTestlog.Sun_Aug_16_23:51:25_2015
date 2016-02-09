@@ -1,0 +1,973 @@
+Query Log
+
+
+Build Start: Sun Aug 16 23:51:25 EDT 2015
+Hostname: tahoe.cs.dartmouth.edu
+Operating System: GNU/Linux
+
+
+BOUNDARY CASES.
+An appropriate error message will be printed for each case.
+
+1.
+This tests for the case where there is an invalid number of args passed (not 2).
+The program should throw an error.
+
+Input: ../query ../../indexer/index.dat
+Output: Please input exactly two arguments.
+Usage: ./query [INDEX_FILE] [HTML_DIRECTORY]
+
+
+2.
+This tests for the case where the INDEX_FILE does not exist.
+The program should throw an error.
+
+At time of testing, there was no test_file file on the machine.
+
+Input: ../query test_file ../../crawler/data
+Output: Please input an existing [INDEX_FILE].
+
+
+3.
+This tests for the case where the HTML_DIRECTORY is empty and has no webpages to be indexed.
+The program should throw an error.
+
+For this test, I used a nonexistent ./data directory.
+
+Input: ../query ../../indexer/index.dat ./data
+Output: Please input an existing [HTML_DIRECTORY].
+
+
+4.
+This tests for the case where the query line is empty.
+The program should throw an error.
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: ''
+Query:> Please input words.
+
+Query:> 
+
+5.
+This tests for the case where non-ASCII characters, or non-whitespace characters, are passed as the query.
+The program should throw an error.
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: life2good brother
+Query:> Please input only ASCII characters, whitespace, or logical operators.
+
+Query:> 
+
+6.
+This tests for the case where the first word of the query line is AND or OR.
+The program should throw an error.
+
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: AND life good
+Query:> Please input a valid query line.
+
+Query:> 
+
+7.
+This tests for the case where the last word of the query line is AND or OR.
+The program should throw an error.
+
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: life good OR
+Query:> Please input a valid query line.
+
+Query:> 
+
+8.
+This tests for the case where the query contains a line of logical operators together.
+The program should throw an error.
+
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: life good OR AND OR power
+Query:> Please input a valid query line.
+
+Query:> 
+
+9.
+This tests for the case where the query contains words in uppercase and lowercase.
+The program should run normally, outputting list of doc_id and url.
+
+
+Input: ../query ../../indexer/index.dat ../../crawler/data
+Stdin: HINdrANCE
+Query:> DOCUMENT ID: 259 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biomedical_engineering.html
+DOCUMENT ID: 891 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Latin_declension.html
+
+
+Query:> 
+
+
+
+GOOD OUTPUT.
+The list of doc_ids and urls are printed to show how the output should look like.
+
+
+1.
+Testing a query with OR.
+The program will output a list of docs that contain a union of the words.
+Input: ../query ../../indexer/index.dat ../../crawler/data
+
+
+Stdin: libation
+Query:> DOCUMENT ID: 1467 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St._John%27s_College_(Annapolis/Santa_Fe).html
+
+
+Query:> 
+
+Stdin: hindrance
+Query:> DOCUMENT ID: 259 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biomedical_engineering.html
+DOCUMENT ID: 891 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Latin_declension.html
+
+
+Query:> 
+
+Stdin: libation OR hindrance
+Query:> DOCUMENT ID: 1467 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St._John%27s_College_(Annapolis/Santa_Fe).html
+DOCUMENT ID: 259 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biomedical_engineering.html
+DOCUMENT ID: 891 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Latin_declension.html
+
+
+Query:> 
+
+2.
+Testing a query with AND.
+The program will output a list of docs that contain an intersection of the words.
+Input: ../query ../../indexer/index.dat ../../crawler/data
+
+
+Stdin: squash
+Query:> DOCUMENT ID: 1446 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Princeton_Tigers.html
+DOCUMENT ID: 1452 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Navy_Midshipmen.html
+DOCUMENT ID: 1117 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Big_Green.html
+DOCUMENT ID: 1445 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Harvard_Crimson.html
+DOCUMENT ID: 1469 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wellesley_College.html
+DOCUMENT ID: 1495 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St.html
+DOCUMENT ID: 1110 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/United_States.html
+DOCUMENT ID: 1130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Native_Americans_in_the_United_States.html
+DOCUMENT ID: 1444 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cornell_Big_Red.html
+DOCUMENT ID: 1453 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Northeastern_Huskies.html
+DOCUMENT ID: 1470 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Williams_College.html
+DOCUMENT ID: 1115 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ivy_League.html
+DOCUMENT ID: 1134 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Montaukett.html
+DOCUMENT ID: 1140 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Province_of_New_Hampshire.html
+DOCUMENT ID: 1215 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alumni_Gymnasium_(Dartmouth_College).html
+DOCUMENT ID: 1216 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Leede_Arena.html
+DOCUMENT ID: 1316 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Vassar_College.html
+DOCUMENT ID: 1372 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brad_Ausmus.html
+DOCUMENT ID: 1375 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jay_Fiedler.html
+DOCUMENT ID: 1442 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brown_Bears.html
+DOCUMENT ID: 1450 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Georgetown_Hoyas.html
+DOCUMENT ID: 1466 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pomona_College.html
+DOCUMENT ID: 1468 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Swarthmore_College.html
+DOCUMENT ID: 248 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_animation.html
+DOCUMENT ID: 70 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Animation.html
+
+
+Query:> 
+
+Stdin: whale
+Query:> DOCUMENT ID: 1513 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ingalls_Rink.html
+DOCUMENT ID: 1296 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dr-2.html
+DOCUMENT ID: 473 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Stephen_C.html
+DOCUMENT ID: 1130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Native_Americans_in_the_United_States.html
+DOCUMENT ID: 1196 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/New_England.html
+DOCUMENT ID: 1368 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Friday_Night_Lights_(TV_series).html
+DOCUMENT ID: 1501 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Yale_Bulldogs_men%27s_ice_hockey.html
+DOCUMENT ID: 1502 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Yale_Bulldogs_women%27s_ice_hockey.html
+DOCUMENT ID: 820 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Regular_expressions.html
+DOCUMENT ID: 873 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/License_plate.html
+DOCUMENT ID: 892 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Anglo-Saxon_language.html
+
+
+Query:> 
+
+Stdin: squash AND whale
+Query:> DOCUMENT ID: 1130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Native_Americans_in_the_United_States.html
+
+
+Query:> 
+
+3.
+Testing a query with no operators (AND operation).
+The program will perform the same way it would with a query that contains 'AND'.
+Compare this output with the above.
+Input: ../query ../../indexer/index.dat ../../crawler/data
+
+
+Stdin: squash whale
+Query:> DOCUMENT ID: 1130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Native_Americans_in_the_United_States.html
+
+
+Query:> 
+
+4.
+Testing a query with many words and operators.
+Input: ../query ../../indexer/index.dat ../../crawler/data
+
+
+Stdin: dog OR cat OR life OR power AND chill
+Query:> DOCUMENT ID: 902 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cat_(Unix).html
+DOCUMENT ID: 252 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Artificial_life.html
+DOCUMENT ID: 1296 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dr-2.html
+DOCUMENT ID: 1307 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Joseph_Smith.html
+DOCUMENT ID: 1194 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dwight_D.html
+DOCUMENT ID: 1368 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Friday_Night_Lights_(TV_series).html
+DOCUMENT ID: 138 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Life-critical_system.html
+DOCUMENT ID: 281 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Green_building.html
+DOCUMENT ID: 347 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Transhumanism.html
+DOCUMENT ID: 792 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bill_Clinton.html
+DOCUMENT ID: 102 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alan_Turing.html
+DOCUMENT ID: 184 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Leibniz.html
+DOCUMENT ID: 23 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Gottfried_Leibniz.html
+DOCUMENT ID: 5 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College.html
+DOCUMENT ID: 1498 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Union_Dutchmen.html
+DOCUMENT ID: 17 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Human.html
+DOCUMENT ID: 348 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Kardashev_scale.html
+DOCUMENT ID: 1110 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/United_States.html
+DOCUMENT ID: 1291 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dinesh_D%27Souza.html
+DOCUMENT ID: 1367 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_West_Wing.html
+DOCUMENT ID: 1349 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Private_Practice_(TV_series).html
+DOCUMENT ID: 359 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_release_life_cycle.html
+DOCUMENT ID: 1130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Native_Americans_in_the_United_States.html
+DOCUMENT ID: 1462 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/College_of_the_Holy_Cross.html
+DOCUMENT ID: 1139 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/George_III_of_the_United_Kingdom.html
+DOCUMENT ID: 1142 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/King_George_III.html
+DOCUMENT ID: 1127 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_Greek_organizations.html
+DOCUMENT ID: 1429 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Tabard_(fraternity).html
+DOCUMENT ID: 1466 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pomona_College.html
+DOCUMENT ID: 251 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Virtual_reality.html
+DOCUMENT ID: 28 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Charles_Babbage.html
+DOCUMENT ID: 101 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Kurt_G%c3%b6del.html
+DOCUMENT ID: 1280 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Robert_Frost.html
+DOCUMENT ID: 1308 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/LDS_Church.html
+DOCUMENT ID: 1407 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/F.html
+DOCUMENT ID: 1415 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Scripps_College.html
+DOCUMENT ID: 235 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_development_process.html
+DOCUMENT ID: 256 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nutrition.html
+DOCUMENT ID: 1356 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fred_Rogers.html
+DOCUMENT ID: 1609 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Karl_Pearson.html
+DOCUMENT ID: 1655 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Herbert_A.html
+DOCUMENT ID: 97 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Philosophy.html
+DOCUMENT ID: 820 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Regular_expressions.html
+DOCUMENT ID: 837 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Red_Hat_Enterprise_Linux.html
+DOCUMENT ID: 1132 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Samson_Occom.html
+DOCUMENT ID: 1233 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fraternities_and_sororities_in_North_America.html
+DOCUMENT ID: 1265 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nelson_Rockefeller.html
+DOCUMENT ID: 284 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sustainable_design.html
+DOCUMENT ID: 55 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Folding%40home.html
+DOCUMENT ID: 1348 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Grey%27s_Anatomy.html
+DOCUMENT ID: 32 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ada_Lovelace.html
+DOCUMENT ID: 1155 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/College_admissions_in_the_United_States.html
+DOCUMENT ID: 1206 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Manhattan.html
+DOCUMENT ID: 1264 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Salmon_P.html
+DOCUMENT ID: 1298 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jonathan_Clarkson_Gibbs.html
+DOCUMENT ID: 1365 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Connie_Britton.html
+DOCUMENT ID: 1468 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Swarthmore_College.html
+DOCUMENT ID: 173 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bioinformatics.html
+DOCUMENT ID: 21 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Blaise_Pascal.html
+DOCUMENT ID: 328 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Systems_engineering.html
+DOCUMENT ID: 1471 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_College_of_William_%26_Mary.html
+DOCUMENT ID: 838 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fedora_(operating_system).html
+DOCUMENT ID: 1136 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Methodist.html
+DOCUMENT ID: 1152 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/John_Ordronaux_(doctor).html
+DOCUMENT ID: 1237 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sexual_harassment.html
+DOCUMENT ID: 1338 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/NBC.html
+DOCUMENT ID: 186 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Samuel_Morse.html
+DOCUMENT ID: 285 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sustainable_engineering.html
+DOCUMENT ID: 59 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Artificial_intelligence.html
+DOCUMENT ID: 75 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Simulation.html
+DOCUMENT ID: 1418 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/CNN.html
+DOCUMENT ID: 53 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Human_Genome_Project.html
+DOCUMENT ID: 66 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Entertainment.html
+DOCUMENT ID: 1353 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Horton_Hears_a_Who%21_(film).html
+DOCUMENT ID: 70 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Animation.html
+DOCUMENT ID: 1119 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Geisel_School_of_Medicine.html
+DOCUMENT ID: 1128 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Puritan.html
+DOCUMENT ID: 1257 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Medical_School.html
+DOCUMENT ID: 1362 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Aisha_Tyler.html
+DOCUMENT ID: 146 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Semiotics.html
+DOCUMENT ID: 1465 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Haverford_College.html
+DOCUMENT ID: 171 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Video_games.html
+DOCUMENT ID: 215 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Number_theory.html
+DOCUMENT ID: 71 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Video_game.html
+DOCUMENT ID: 1227 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_student_groups.html
+DOCUMENT ID: 1350 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Scandal_(TV_series).html
+DOCUMENT ID: 1413 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fox_News.html
+DOCUMENT ID: 1440 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Forensic_Union.html
+DOCUMENT ID: 80 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Legged_Squad_Support_System.html
+DOCUMENT ID: 981 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sed.html
+DOCUMENT ID: 1345 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rachel_Dratch.html
+DOCUMENT ID: 1364 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/24_(TV_series).html
+DOCUMENT ID: 1125 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Daniel_Webster.html
+DOCUMENT ID: 1196 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/New_England.html
+DOCUMENT ID: 1271 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/James_V.html
+DOCUMENT ID: 1275 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/C-2.html
+DOCUMENT ID: 1302 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Joseph_Tracy.html
+DOCUMENT ID: 1331 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Putnam_Investments.html
+DOCUMENT ID: 1359 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Michael_Moriarty.html
+DOCUMENT ID: 1363 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Friends.html
+DOCUMENT ID: 1405 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/John_Landis.html
+DOCUMENT ID: 1467 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St._John%27s_College_(Annapolis/Santa_Fe).html
+DOCUMENT ID: 1469 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wellesley_College.html
+DOCUMENT ID: 148 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Philosophy_of_mind.html
+DOCUMENT ID: 1495 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St.html
+DOCUMENT ID: 185 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Boole.html
+DOCUMENT ID: 22 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pascal%27s_calculator.html
+DOCUMENT ID: 275 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Multimedia_learning.html
+DOCUMENT ID: 329 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Infrastructure.html
+DOCUMENT ID: 334 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Skill.html
+DOCUMENT ID: 44 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bletchley_Park.html
+DOCUMENT ID: 485 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Institute_of_Electrical_and_Electronics_Engineers.html
+DOCUMENT ID: 764 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/IEEE.html
+DOCUMENT ID: 898 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/John_Lions.html
+DOCUMENT ID: 1148 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Supreme_Court_of_the_United_States.html
+DOCUMENT ID: 1229 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Appalachian_Trail.html
+DOCUMENT ID: 1246 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_traditions.html
+DOCUMENT ID: 1347 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Shonda_Rhimes.html
+DOCUMENT ID: 1366 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Spin_City.html
+DOCUMENT ID: 1369 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mindy_Kaling.html
+DOCUMENT ID: 222 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Parsing.html
+DOCUMENT ID: 197 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Women_in_computing.html
+DOCUMENT ID: 925 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Split_(Unix).html
+DOCUMENT ID: 1120 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Thayer_School_of_Engineering.html
+DOCUMENT ID: 1121 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tuck_School_of_Business.html
+DOCUMENT ID: 1178 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/London_School_of_Economics.html
+DOCUMENT ID: 1223 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Residential_college.html
+DOCUMENT ID: 1236 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alcohol_abuse.html
+DOCUMENT ID: 1269 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/United_States_House_of_Representatives.html
+DOCUMENT ID: 1273 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Henry_Paulson.html
+DOCUMENT ID: 1309 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Stuart_Kauffman.html
+DOCUMENT ID: 1318 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Oren_B.html
+DOCUMENT ID: 1346 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Saturday_Night_Live.html
+DOCUMENT ID: 145 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cybernetics.html
+DOCUMENT ID: 1459 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Amherst_College.html
+DOCUMENT ID: 1461 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Claremont_McKenna_College.html
+DOCUMENT ID: 1463 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Davidson_College.html
+DOCUMENT ID: 1492 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rensselaer_Engineers.html
+DOCUMENT ID: 1520 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/New_England_College.html
+DOCUMENT ID: 167 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Information_security.html
+DOCUMENT ID: 1704 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Maurice_Vincent_Wilkes.html
+DOCUMENT ID: 248 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_animation.html
+DOCUMENT ID: 260 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Genetic_engineering.html
+DOCUMENT ID: 272 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Safety_engineering.html
+DOCUMENT ID: 279 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ecological_design.html
+DOCUMENT ID: 719 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Apple%2c_Inc.html
+DOCUMENT ID: 839 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/SUSE_Linux.html
+DOCUMENT ID: 841 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ubuntu_(operating_system).html
+DOCUMENT ID: 85 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_engineering.html
+DOCUMENT ID: 366 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/GNU_Compiler_Collection.html
+DOCUMENT ID: 1262 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Anthropomorphism.html
+DOCUMENT ID: 1403 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/National_Lampoon%27s_Animal_House.html
+DOCUMENT ID: 1437 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/2001_Dartmouth_College_murders.html
+DOCUMENT ID: 777 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Troff.html
+DOCUMENT ID: 798 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Plan_9_from_Bell_Labs.html
+DOCUMENT ID: 982 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sort_(Unix).html
+DOCUMENT ID: 1107 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Philip_J.html
+DOCUMENT ID: 1143 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Christianization.html
+DOCUMENT ID: 1145 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cricket.html
+DOCUMENT ID: 1183 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/SAT.html
+DOCUMENT ID: 1242 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/BlitzMail.html
+DOCUMENT ID: 1272 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Robert_Reich.html
+DOCUMENT ID: 1290 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Budd_Schulberg.html
+DOCUMENT ID: 1304 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Arnold_Resnicoff.html
+DOCUMENT ID: 1340 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hasbro.html
+DOCUMENT ID: 1342 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/On_the_Waterfront.html
+DOCUMENT ID: 1357 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sarah_Wayne_Callies.html
+DOCUMENT ID: 1360 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Andrew_Shue.html
+DOCUMENT ID: 1376 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Reggie_Williams_(linebacker).html
+DOCUMENT ID: 1402 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Harvey_Mudd_College.html
+DOCUMENT ID: 1430 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Phi_Tau.html
+DOCUMENT ID: 1447 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Penn_Quakers.html
+DOCUMENT ID: 1454 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/College_Boat_Club.html
+DOCUMENT ID: 1460 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Boston_College.html
+DOCUMENT ID: 1464 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Grinnell_College.html
+DOCUMENT ID: 1470 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Williams_College.html
+DOCUMENT ID: 149 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Robotics.html
+DOCUMENT ID: 1516 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_College_of_Saint_Mary_Magdalen.html
+DOCUMENT ID: 1522 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Saint_Anselm_College.html
+DOCUMENT ID: 1556 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Graceful_degradation.html
+DOCUMENT ID: 19 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Digital_computer.html
+DOCUMENT ID: 232 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Requirements_analysis.html
+DOCUMENT ID: 259 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biomedical_engineering.html
+DOCUMENT ID: 30 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Analytical_Engine.html
+DOCUMENT ID: 31 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer.html
+DOCUMENT ID: 311 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cryogenics.html
+DOCUMENT ID: 400 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Perl.html
+DOCUMENT ID: 45 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Society.html
+DOCUMENT ID: 699 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Open_source.html
+DOCUMENT ID: 828 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Richard_Stallman.html
+DOCUMENT ID: 853 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/OpenSolaris.html
+DOCUMENT ID: 874 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/HP9000.html
+DOCUMENT ID: 877 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Copyright.html
+DOCUMENT ID: 92 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Edsger_Dijkstra.html
+DOCUMENT ID: 95 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_system.html
+DOCUMENT ID: 1355 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mister_Rogers%27_Neighborhood.html
+DOCUMENT ID: 1450 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Georgetown_Hoyas.html
+DOCUMENT ID: 1015 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Find.html
+DOCUMENT ID: 1351 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chris_Meledandri.html
+DOCUMENT ID: 399 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/LPC_(programming_language).html
+DOCUMENT ID: 519 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Newline.html
+DOCUMENT ID: 747 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/General_Electric.html
+DOCUMENT ID: 774 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mkfs.html
+DOCUMENT ID: 835 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Coreutils.html
+DOCUMENT ID: 960 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wall_(Unix).html
+DOCUMENT ID: 1030 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/BlackBerry_10.html
+DOCUMENT ID: 1100 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Live_USB.html
+DOCUMENT ID: 1118 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Keggy_the_Keg.html
+DOCUMENT ID: 1131 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mohegan.html
+DOCUMENT ID: 1171 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Liberal_arts.html
+DOCUMENT ID: 1228 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_publications.html
+DOCUMENT ID: 1250 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alma_Mater_(Dartmouth_College).html
+DOCUMENT ID: 1278 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pulitzer_Prize.html
+DOCUMENT ID: 1289 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Louise_Erdrich.html
+DOCUMENT ID: 1293 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mort_Kondracke.html
+DOCUMENT ID: 1297 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ebenezer_Porter.html
+DOCUMENT ID: 1306 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hyrum_Smith.html
+DOCUMENT ID: 1319 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Philander_Chase.html
+DOCUMENT ID: 1344 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Sting.html
+DOCUMENT ID: 1372 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brad_Ausmus.html
+DOCUMENT ID: 1390 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dick_Durrance.html
+DOCUMENT ID: 14 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Complex_systems.html
+DOCUMENT ID: 1432 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chi_Heorot.html
+DOCUMENT ID: 1436 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sphinx_(senior_society).html
+DOCUMENT ID: 1455 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rutgers_Scarlet_Knights.html
+DOCUMENT ID: 147 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Electrical_engineering.html
+DOCUMENT ID: 1475 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Clarkson_Golden_Knights.html
+DOCUMENT ID: 150 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_development.html
+DOCUMENT ID: 151 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Turing_Test.html
+DOCUMENT ID: 1527 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Manchester_Community_College_(New_Hampshire).html
+DOCUMENT ID: 168 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ubiquitous_computing.html
+DOCUMENT ID: 187 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Turing_machine.html
+DOCUMENT ID: 198 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Steven_Levy.html
+DOCUMENT ID: 205 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Donald_Knuth.html
+DOCUMENT ID: 262 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nanomedicine.html
+DOCUMENT ID: 263 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tissue_engineering.html
+DOCUMENT ID: 264 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Construction.html
+DOCUMENT ID: 305 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Aerospace_engineering.html
+DOCUMENT ID: 331 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Timeline_of_historic_inventions.html
+DOCUMENT ID: 34 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Herman_Hollerith.html
+DOCUMENT ID: 355 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dennis_Ritchie.html
+DOCUMENT ID: 37 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/IBM.html
+DOCUMENT ID: 43 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/World_War_II.html
+DOCUMENT ID: 595 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Embedded_systems.html
+DOCUMENT ID: 603 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Embedded_system.html
+DOCUMENT ID: 640 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Open-source_software.html
+DOCUMENT ID: 696 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Closed_source_software.html
+DOCUMENT ID: 705 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Proprietary_software.html
+DOCUMENT ID: 707 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Open_source_software.html
+DOCUMENT ID: 830 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Linus_Torvalds.html
+DOCUMENT ID: 87 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Harvard_Business_School.html
+DOCUMENT ID: 1548 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Prime_number.html
+DOCUMENT ID: 455 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Type_polymorphism.html
+DOCUMENT ID: 609 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/MATLAB.html
+DOCUMENT ID: 836 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Linux_distributions.html
+DOCUMENT ID: 968 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cut_(Unix).html
+DOCUMENT ID: 1006 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Netcat.html
+DOCUMENT ID: 1016 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Grep.html
+DOCUMENT ID: 1117 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Big_Green.html
+DOCUMENT ID: 1311 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nobel_Prize.html
+DOCUMENT ID: 1352 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ice_Age_(franchise).html
+DOCUMENT ID: 1613 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/NIST.html
+DOCUMENT ID: 172 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_simulation.html
+DOCUMENT ID: 250 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wearable_computer.html
+DOCUMENT ID: 388 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/C%2b%2b.html
+DOCUMENT ID: 444 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Switch_statement.html
+DOCUMENT ID: 67 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Television.html
+DOCUMENT ID: 915 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ln_(Unix).html
+DOCUMENT ID: 955 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Uptime.html
+DOCUMENT ID: 978 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Less_(Unix).html
+DOCUMENT ID: 980 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Paste_(Unix).html
+DOCUMENT ID: 983 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Spell_(Unix).html
+DOCUMENT ID: 984 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Strings_(Unix).html
+DOCUMENT ID: 1031 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/IOS.html
+DOCUMENT ID: 1087 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mac_OS.html
+DOCUMENT ID: 1095 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/VM_(operating_system).html
+DOCUMENT ID: 1109 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/New_Hampshire.html
+DOCUMENT ID: 1122 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Colonial_Colleges.html
+DOCUMENT ID: 1123 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Eleazar_Wheelock.html
+DOCUMENT ID: 1141 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sir_John_Wentworth%2c_1st_Baronet.html
+DOCUMENT ID: 115 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Automata_theory.html
+DOCUMENT ID: 1157 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Public_policy.html
+DOCUMENT ID: 1158 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/International_relations.html
+DOCUMENT ID: 1160 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/John_George_Kemeny.html
+DOCUMENT ID: 1165 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jim_Yong_Kim.html
+DOCUMENT ID: 117 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Quantum_computer.html
+DOCUMENT ID: 1197 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Green_(Dartmouth_College).html
+DOCUMENT ID: 1205 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wallace_Harrison.html
+DOCUMENT ID: 1215 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alumni_Gymnasium_(Dartmouth_College).html
+DOCUMENT ID: 1221 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Skiway.html
+DOCUMENT ID: 1232 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Dartmouth_Review.html
+DOCUMENT ID: 1244 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cellular_phones.html
+DOCUMENT ID: 1277 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Levi_Woodbury.html
+DOCUMENT ID: 1281 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Paul_Gigot.html
+DOCUMENT ID: 1283 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nigel_Jaquiss.html
+DOCUMENT ID: 1286 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jake_Tapper.html
+DOCUMENT ID: 1288 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Robert_Christgau.html
+DOCUMENT ID: 1294 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/James_Panero.html
+DOCUMENT ID: 1303 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Marshall_Meyer.html
+DOCUMENT ID: 1305 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/David_E.html
+DOCUMENT ID: 1313 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/K.html
+DOCUMENT ID: 1314 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/George_Davis_Snell.html
+DOCUMENT ID: 1315 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Marye_Anne_Fox.html
+DOCUMENT ID: 1316 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Vassar_College.html
+DOCUMENT ID: 1325 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sandy_Alderson.html
+DOCUMENT ID: 1332 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Donald_J._Hall%2c_Sr.html
+DOCUMENT ID: 1334 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jeffrey_R.html
+DOCUMENT ID: 1339 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brian_Goldner.html
+DOCUMENT ID: 1358 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Prison_Break.html
+DOCUMENT ID: 1375 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jay_Fiedler.html
+DOCUMENT ID: 1380 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Adam_Nelson.html
+DOCUMENT ID: 1384 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Helsinki.html
+DOCUMENT ID: 140 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_security.html
+DOCUMENT ID: 1406 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ann_Sheridan.html
+DOCUMENT ID: 1412 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Encyclop%c3%a6dia_Britannica.html
+DOCUMENT ID: 1417 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/William_Jewell_College.html
+DOCUMENT ID: 1425 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alpha_Theta.html
+DOCUMENT ID: 1427 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Kappa_Kappa_Kappa.html
+DOCUMENT ID: 1441 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_Marching_Band.html
+DOCUMENT ID: 1444 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cornell_Big_Red.html
+DOCUMENT ID: 1457 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wisconsin_Badgers.html
+DOCUMENT ID: 1481 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cornell_Big_Red_men%27s_ice_hockey.html
+DOCUMENT ID: 1482 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cornell_Big_Red_women%27s_ice_hockey.html
+DOCUMENT ID: 1506 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Lynah_Rink.html
+DOCUMENT ID: 1519 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mount_Washington_College.html
+DOCUMENT ID: 1525 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Keene_State_College.html
+DOCUMENT ID: 155 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Data_mining.html
+DOCUMENT ID: 1593 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Daniel_J.html
+DOCUMENT ID: 1604 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Thomas_H.html
+DOCUMENT ID: 1666 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Motorola_6800.html
+DOCUMENT ID: 1677 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Josephus_problem.html
+DOCUMENT ID: 169 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Systems_architecture.html
+DOCUMENT ID: 18 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Algorithm.html
+DOCUMENT ID: 2 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_science.html
+DOCUMENT ID: 20 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Abacus.html
+DOCUMENT ID: 202 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hal_Abelson.html
+DOCUMENT ID: 211 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Open_Directory_Project.html
+DOCUMENT ID: 216 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Graph_theory.html
+DOCUMENT ID: 234 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_testing.html
+DOCUMENT ID: 249 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/User_interface.html
+DOCUMENT ID: 257 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biological_engineering.html
+DOCUMENT ID: 258 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Biomechatronics.html
+DOCUMENT ID: 268 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Civil_engineering.html
+DOCUMENT ID: 274 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Structural_engineering.html
+DOCUMENT ID: 280 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ecological_engineering.html
+DOCUMENT ID: 289 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Enterprise_engineering.html
+DOCUMENT ID: 294 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mining_engineering.html
+DOCUMENT ID: 330 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Invention.html
+DOCUMENT ID: 332 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Knowledge.html
+DOCUMENT ID: 341 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Diffusion_of_innovations.html
+DOCUMENT ID: 349 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/STEM_fields.html
+DOCUMENT ID: 38 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Howard_Aiken.html
+DOCUMENT ID: 39 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Harvard_Mark_I.html
+DOCUMENT ID: 422 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brian_Kernighan.html
+DOCUMENT ID: 424 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/International_Organization_for_Standardization.html
+DOCUMENT ID: 47 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Information_Age.html
+DOCUMENT ID: 48 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Internet.html
+DOCUMENT ID: 51 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Intractably.html
+DOCUMENT ID: 52 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cryptanalysis_of_the_Enigma.html
+DOCUMENT ID: 594 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/ISO_standard.html
+DOCUMENT ID: 615 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/George_Necula.html
+DOCUMENT ID: 62 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Numerical_analysis.html
+DOCUMENT ID: 655 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Freeware.html
+DOCUMENT ID: 659 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Retail_software.html
+DOCUMENT ID: 704 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_license.html
+DOCUMENT ID: 706 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Free_software.html
+DOCUMENT ID: 806 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Shell_script.html
+DOCUMENT ID: 824 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Debian.html
+DOCUMENT ID: 831 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Linux_kernel.html
+DOCUMENT ID: 840 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/OpenSUSE.html
+DOCUMENT ID: 844 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Slackware_Linux.html
+DOCUMENT ID: 876 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Santa_Cruz_Operation.html
+DOCUMENT ID: 89 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Peter_Naur.html
+DOCUMENT ID: 9 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computational_complexity_theory.html
+DOCUMENT ID: 98 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computational_linguistics.html
+DOCUMENT ID: 1105 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Latin_language.html
+DOCUMENT ID: 1341 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Academy_Award.html
+DOCUMENT ID: 42 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Enigma_machine.html
+DOCUMENT ID: 486 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Working_group.html
+DOCUMENT ID: 551 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hello%2c_world.html
+DOCUMENT ID: 863 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Kludge.html
+DOCUMENT ID: 890 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Latin.html
+DOCUMENT ID: 1000 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Yes_(Unix).html
+DOCUMENT ID: 1002 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dig_(command).html
+DOCUMENT ID: 1003 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Host_(Unix).html
+DOCUMENT ID: 1004 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ifconfig.html
+DOCUMENT ID: 1005 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Inetd.html
+DOCUMENT ID: 1007 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Netstat.html
+DOCUMENT ID: 1008 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nslookup.html
+DOCUMENT ID: 1009 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ping_(networking_utility).html
+DOCUMENT ID: 1010 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rdate.html
+DOCUMENT ID: 1011 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rlogin.html
+DOCUMENT ID: 1014 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Traceroute.html
+DOCUMENT ID: 1017 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Locate_(Unix).html
+DOCUMENT ID: 1018 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Whatis.html
+DOCUMENT ID: 1019 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Whereis.html
+DOCUMENT ID: 1020 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Apropos_(Unix).html
+DOCUMENT ID: 1021 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Help_(command).html
+DOCUMENT ID: 1022 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Man_page.html
+DOCUMENT ID: 1023 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bc_(programming_language).html
+DOCUMENT ID: 1024 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dc_(computer_program).html
+DOCUMENT ID: 1025 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cal_(Unix).html
+DOCUMENT ID: 1026 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Date_(Unix).html
+DOCUMENT ID: 1027 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Lp_(Unix).html
+DOCUMENT ID: 1028 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Lpr.html
+DOCUMENT ID: 103 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Category_theory.html
+DOCUMENT ID: 1247 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bonfire.html
+DOCUMENT ID: 130 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Linguistics.html
+DOCUMENT ID: 165 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_networking.html
+DOCUMENT ID: 1661 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Machine_translation.html
+DOCUMENT ID: 174 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_network.html
+DOCUMENT ID: 386 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/AWK.html
+DOCUMENT ID: 387 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/C_shell.html
+DOCUMENT ID: 394 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Go_(programming_language).html
+DOCUMENT ID: 4 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Unix.html
+DOCUMENT ID: 425 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Internationalization_and_localization.html
+DOCUMENT ID: 439 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Curly_braces.html
+DOCUMENT ID: 548 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Type_conversion.html
+DOCUMENT ID: 557 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Printf.html
+DOCUMENT ID: 564 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Declaration_reflects_use.html
+DOCUMENT ID: 592 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Header_file.html
+DOCUMENT ID: 616 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/C_Shell-2.html
+DOCUMENT ID: 63 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Volatility_(finance).html
+DOCUMENT ID: 683 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/C_data_types.html
+DOCUMENT ID: 695 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Joe_Ossanna.html
+DOCUMENT ID: 703 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/X_Window_System.html
+DOCUMENT ID: 725 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Plain_text.html
+DOCUMENT ID: 767 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Filesystem_Hierarchy_Standard.html
+DOCUMENT ID: 770 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Make_(software).html
+DOCUMENT ID: 772 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Awk-2.html
+DOCUMENT ID: 775 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fsck.html
+DOCUMENT ID: 784 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/X11.html
+DOCUMENT ID: 789 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Manual_page_(Unix).html
+DOCUMENT ID: 851 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/OpenBSD.html
+DOCUMENT ID: 903 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cd_(command).html
+DOCUMENT ID: 904 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chmod.html
+DOCUMENT ID: 905 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chown.html
+DOCUMENT ID: 906 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chgrp.html
+DOCUMENT ID: 907 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cksum.html
+DOCUMENT ID: 908 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cmp_(Unix).html
+DOCUMENT ID: 909 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cp_(Unix).html
+DOCUMENT ID: 910 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dd_(Unix).html
+DOCUMENT ID: 911 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Du_(Unix).html
+DOCUMENT ID: 912 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Df_(Unix).html
+DOCUMENT ID: 913 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/File_(command).html
+DOCUMENT ID: 914 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fuser_(Unix).html
+DOCUMENT ID: 916 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ls.html
+DOCUMENT ID: 917 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mkdir.html
+DOCUMENT ID: 918 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mount_(Unix).html
+DOCUMENT ID: 919 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mv.html
+DOCUMENT ID: 920 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pax_(Unix).html
+DOCUMENT ID: 921 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pwd.html
+DOCUMENT ID: 922 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rm_(Unix).html
+DOCUMENT ID: 923 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Rmdir.html
+DOCUMENT ID: 924 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Size_(Unix).html
+DOCUMENT ID: 926 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tee_(command).html
+DOCUMENT ID: 927 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Touch_(Unix).html
+DOCUMENT ID: 928 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Type_(Unix).html
+DOCUMENT ID: 929 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Umask.html
+DOCUMENT ID: 930 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/At_(Unix).html
+DOCUMENT ID: 931 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Bg_(Unix).html
+DOCUMENT ID: 932 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chroot.html
+DOCUMENT ID: 933 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cron.html
+DOCUMENT ID: 934 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fg_(Unix).html
+DOCUMENT ID: 935 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Kill_(command).html
+DOCUMENT ID: 936 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Killall.html
+DOCUMENT ID: 937 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Nice_(Unix).html
+DOCUMENT ID: 938 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pgrep.html
+DOCUMENT ID: 939 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pidof.html
+DOCUMENT ID: 940 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pkill.html
+DOCUMENT ID: 941 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ps_(Unix).html
+DOCUMENT ID: 942 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Pstree.html
+DOCUMENT ID: 943 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Time_(Unix).html
+DOCUMENT ID: 944 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Top_(software).html
+DOCUMENT ID: 945 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Clear_(Unix).html
+DOCUMENT ID: 946 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Env.html
+DOCUMENT ID: 947 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Exit_(command).html
+DOCUMENT ID: 948 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Finger_protocol.html
+DOCUMENT ID: 949 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Id_(Unix).html
+DOCUMENT ID: 950 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Logname.html
+DOCUMENT ID: 951 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mesg.html
+DOCUMENT ID: 952 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Passwd.html
+DOCUMENT ID: 953 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Su_(Unix).html
+DOCUMENT ID: 954 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sudo.html
+DOCUMENT ID: 956 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Talk_(software).html
+DOCUMENT ID: 957 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tput.html
+DOCUMENT ID: 958 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Uname.html
+DOCUMENT ID: 959 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/W_(Unix).html
+DOCUMENT ID: 961 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Who_(Unix).html
+DOCUMENT ID: 962 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Whoami.html
+DOCUMENT ID: 963 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Write_(Unix).html
+DOCUMENT ID: 964 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Banner_(Unix).html
+DOCUMENT ID: 965 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Basename.html
+DOCUMENT ID: 966 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Comm.html
+DOCUMENT ID: 967 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Csplit.html
+DOCUMENT ID: 969 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Diff.html
+DOCUMENT ID: 970 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dirname.html
+DOCUMENT ID: 971 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ed_(text_editor).html
+DOCUMENT ID: 972 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Ex_(text_editor).html
+DOCUMENT ID: 973 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fmt.html
+DOCUMENT ID: 974 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fold_(Unix).html
+DOCUMENT ID: 975 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Head_(Unix).html
+DOCUMENT ID: 976 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Iconv.html
+DOCUMENT ID: 977 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Join_(Unix).html
+DOCUMENT ID: 979 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/More_(command).html
+DOCUMENT ID: 985 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tail_(Unix).html
+DOCUMENT ID: 986 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Tr_(Unix).html
+DOCUMENT ID: 987 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Uniq.html
+DOCUMENT ID: 988 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Vi.html
+DOCUMENT ID: 989 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wc_(Unix).html
+DOCUMENT ID: 990 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Xargs.html
+DOCUMENT ID: 991 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alias_(command).html
+DOCUMENT ID: 992 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Echo_(command).html
+DOCUMENT ID: 993 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Expr.html
+DOCUMENT ID: 994 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Printf_format_string.html
+DOCUMENT ID: 995 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sleep_(Unix).html
+DOCUMENT ID: 996 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Test_(Unix).html
+DOCUMENT ID: 997 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/True_and_false_(commands).html
+DOCUMENT ID: 998 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Unset.html
+DOCUMENT ID: 999 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Wait_(command).html
+DOCUMENT ID: 1054 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Process_management_(computing).html
+DOCUMENT ID: 1070 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Memory_protection.html
+DOCUMENT ID: 1113 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_green.html
+DOCUMENT ID: 1124 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Congregational_church.html
+DOCUMENT ID: 113 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/P_%3d_NP_problem.html
+DOCUMENT ID: 1138 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Baker_Memorial_Library.html
+DOCUMENT ID: 114 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Millennium_Prize_Problems.html
+DOCUMENT ID: 1144 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brothertown_Indians.html
+DOCUMENT ID: 1146 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College_v.html
+DOCUMENT ID: 1156 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/John_Sloan_Dickey.html
+DOCUMENT ID: 1159 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/V-12_Navy_College_Training_Program.html
+DOCUMENT ID: 116 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computability_theory.html
+DOCUMENT ID: 1161 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/James_O.html
+DOCUMENT ID: 1162 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Booz_Allen_Hamilton.html
+DOCUMENT ID: 1163 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Board_of_Trustees_of_Dartmouth_College.html
+DOCUMENT ID: 1166 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Downhill_skiing.html
+DOCUMENT ID: 1169 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/U.S.html
+DOCUMENT ID: 1170 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Washington_Monthly.html
+DOCUMENT ID: 1174 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Academic_major.html
+DOCUMENT ID: 1179 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/David_Blanchflower.html
+DOCUMENT ID: 118 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Information_theory.html
+DOCUMENT ID: 1180 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Andrew_Samwick.html
+DOCUMENT ID: 1186 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Student_loans_in_the_United_States.html
+DOCUMENT ID: 1188 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Conferences.html
+DOCUMENT ID: 1192 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Academic_term.html
+DOCUMENT ID: 12 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_programming.html
+DOCUMENT ID: 120 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Claude_Shannon.html
+DOCUMENT ID: 1200 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/White_Mountains_(New_Hampshire).html
+DOCUMENT ID: 1204 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hopkins_Center_for_the_Arts.html
+DOCUMENT ID: 1207 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Metropolitan_Opera.html
+DOCUMENT ID: 1209 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hood_Museum_of_Art.html
+DOCUMENT ID: 1210 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth%e2%80%93Hitchcock_Medical_Center.html
+DOCUMENT ID: 1212 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Teaching_hospital.html
+DOCUMENT ID: 1213 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Memorial_Field_(Dartmouth_College).html
+DOCUMENT ID: 1214 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Old_division_football.html
+DOCUMENT ID: 1217 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Memorial_Field_(Dartmouth).html
+DOCUMENT ID: 1218 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Thompson_Arena.html
+DOCUMENT ID: 1220 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hanover_Country_Club.html
+DOCUMENT ID: 1224 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Outing_Club.html
+DOCUMENT ID: 1225 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Dartmouth.html
+DOCUMENT ID: 1226 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Princeton_Review.html
+DOCUMENT ID: 1234 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Desegregate.html
+DOCUMENT ID: 1235 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hazing.html
+DOCUMENT ID: 1240 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Newsweek.html
+DOCUMENT ID: 1249 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Synecdoche.html
+DOCUMENT ID: 1251 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Seal_of_Dartmouth_College.html
+DOCUMENT ID: 1253 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/USPG.html
+DOCUMENT ID: 1255 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Coat_of_arms.html
+DOCUMENT ID: 1261 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Jack-O-Lantern.html
+DOCUMENT ID: 1266 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Vice_President_of_the_United_States.html
+DOCUMENT ID: 127 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Analysis_of_algorithms.html
+DOCUMENT ID: 1282 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Jake_Hooker_(journalist).html
+DOCUMENT ID: 1284 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Martin_J.html
+DOCUMENT ID: 129 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computational_geometry.html
+DOCUMENT ID: 1292 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Laura_Ingraham.html
+DOCUMENT ID: 131 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Type_theory.html
+DOCUMENT ID: 1321 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Charles_Augustus_Aiken.html
+DOCUMENT ID: 1326 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/San_Diego_Padres.html
+DOCUMENT ID: 1333 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hallmark_Cards.html
+DOCUMENT ID: 1336 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/United_Health_Care.html
+DOCUMENT ID: 1337 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Grant_Tinker.html
+DOCUMENT ID: 134 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Formal_methods.html
+DOCUMENT ID: 135 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Formal_specification.html
+DOCUMENT ID: 1361 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Melrose_Place.html
+DOCUMENT ID: 137 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software.html
+DOCUMENT ID: 1371 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/The_Mindy_Project.html
+DOCUMENT ID: 1381 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/2000_Sydney_Olympics.html
+DOCUMENT ID: 1383 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/2005_World_Championships_in_Athletics.html
+DOCUMENT ID: 1386 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sarah_Parsons.html
+DOCUMENT ID: 1408 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/U.S-2.html
+DOCUMENT ID: 1421 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Big_Green_men%27s_lacrosse.html
+DOCUMENT ID: 1422 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Red_Rolfe_Field_at_Biondi_Park.html
+DOCUMENT ID: 1423 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Scully-Fahey_Field.html
+DOCUMENT ID: 1424 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth-Hitchcock_Medical_Center.html
+DOCUMENT ID: 1426 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Alpha_Chi_Alpha.html
+DOCUMENT ID: 1428 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sigma_Delta.html
+DOCUMENT ID: 1431 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Chi_Gamma_Epsilon.html
+DOCUMENT ID: 1433 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Casque_and_Gauntlet.html
+DOCUMENT ID: 1434 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dragon_Society.html
+DOCUMENT ID: 1435 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fire_and_Skoal.html
+DOCUMENT ID: 1438 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_pong.html
+DOCUMENT ID: 1439 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Broadcasting.html
+DOCUMENT ID: 1442 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brown_Bears.html
+DOCUMENT ID: 1443 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Columbia_Lions.html
+DOCUMENT ID: 1446 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Princeton_Tigers.html
+DOCUMENT ID: 1451 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Holy_Cross_Crusaders.html
+DOCUMENT ID: 1456 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Syracuse_Orange.html
+DOCUMENT ID: 1473 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brown_Bears_men%27s_ice_hockey.html
+DOCUMENT ID: 1474 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Brown_Bears_women%27s_ice_hockey.html
+DOCUMENT ID: 1483 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Big_Green_men%27s_ice_hockey.html
+DOCUMENT ID: 1484 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_Big_Green_women%27s_ice_hockey.html
+DOCUMENT ID: 1487 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Princeton_Tigers_men%27s_ice_hockey.html
+DOCUMENT ID: 1488 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Princeton_Tigers_women%27s_ice_hockey.html
+DOCUMENT ID: 1499 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Union_Dutchmen_ice_hockey.html
+DOCUMENT ID: 1500 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Union_Dutchwomen_ice_hockey.html
+DOCUMENT ID: 1503 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Meehan_Auditorium.html
+DOCUMENT ID: 1512 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Achilles_Rink.html
+DOCUMENT ID: 1514 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Boardwalk_Hall.html
+DOCUMENT ID: 152 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_vision.html
+DOCUMENT ID: 153 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Image_processing.html
+DOCUMENT ID: 1554 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Birthday_problem.html
+DOCUMENT ID: 157 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Knowledge_representation.html
+DOCUMENT ID: 1573 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Real-time_system.html
+DOCUMENT ID: 158 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Natural_language_processing.html
+DOCUMENT ID: 1595 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Arthur_Samuel.html
+DOCUMENT ID: 16 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_accessibility.html
+DOCUMENT ID: 160 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_architecture.html
+DOCUMENT ID: 161 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Digital_logic.html
+DOCUMENT ID: 1623 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Stack_(abstract_data_type).html
+DOCUMENT ID: 1656 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/RAND_Corporation.html
+DOCUMENT ID: 1657 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Information_Processing_Language.html
+DOCUMENT ID: 1659 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/UNESCO.html
+DOCUMENT ID: 1663 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/LISP.html
+DOCUMENT ID: 1684 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Lisp_programming_language.html
+DOCUMENT ID: 1696 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Functional_programming_language.html
+DOCUMENT ID: 170 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Special_effects.html
+DOCUMENT ID: 1700 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Stack_(data_structure).html
+DOCUMENT ID: 182 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Health_Informatics.html
+DOCUMENT ID: 193 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Systems_analysis.html
+DOCUMENT ID: 196 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Informatics_(academic_field).html
+DOCUMENT ID: 200 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/David_Kahn_(writer).html
+DOCUMENT ID: 208 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Association_for_Information_Systems.html
+DOCUMENT ID: 214 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Set_theory.html
+DOCUMENT ID: 217 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Combinatorics.html
+DOCUMENT ID: 218 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Boolean_algebra.html
+DOCUMENT ID: 220 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Algorithm_design.html
+DOCUMENT ID: 226 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Functional_programming.html
+DOCUMENT ID: 228 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Programming_paradigm.html
+DOCUMENT ID: 233 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_design.html
+DOCUMENT ID: 237 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Telecommunication.html
+DOCUMENT ID: 24 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Stepped_Reckoner.html
+DOCUMENT ID: 242 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/SQL.html
+DOCUMENT ID: 245 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Automated_reasoning.html
+DOCUMENT ID: 246 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Expert_system.html
+DOCUMENT ID: 247 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Visualization_(computer_graphics).html
+DOCUMENT ID: 25 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Thomas_de_Colmar.html
+DOCUMENT ID: 253 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Symbolic_computation.html
+DOCUMENT ID: 254 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/ACM_Computing_Classification_System.html
+DOCUMENT ID: 255 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Food_engineering.html
+DOCUMENT ID: 26 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mechanical_calculator.html
+DOCUMENT ID: 267 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Building_services_engineering.html
+DOCUMENT ID: 269 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Construction_engineering.html
+DOCUMENT ID: 27 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Arithmometer.html
+DOCUMENT ID: 271 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fire_protection_engineering.html
+DOCUMENT ID: 278 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Petroleum_engineering.html
+DOCUMENT ID: 286 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Automation.html
+DOCUMENT ID: 29 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Difference_engine.html
+DOCUMENT ID: 291 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Industrial_engineering.html
+DOCUMENT ID: 295 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Research_and_development.html
+DOCUMENT ID: 306 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Automotive_engineering.html
+DOCUMENT ID: 307 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Naval_architecture.html
+DOCUMENT ID: 308 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Skyhook_(structure).html
+DOCUMENT ID: 319 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Control_engineering.html
+DOCUMENT ID: 320 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Electronic_engineering.html
+DOCUMENT ID: 322 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hydraulic_engineering.html
+DOCUMENT ID: 323 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mechanical_engineering.html
+DOCUMENT ID: 324 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mechatronics.html
+DOCUMENT ID: 344 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Hype_cycle.html
+DOCUMENT ID: 36 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Punched_card.html
+DOCUMENT ID: 368 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Intel_C%2b%2b_Compiler.html
+DOCUMENT ID: 371 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Watcom_C_compiler.html
+DOCUMENT ID: 41 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Cambridge_Computer_Lab.html
+DOCUMENT ID: 416 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_architectures.html
+DOCUMENT ID: 417 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Python_(programming_language).html
+DOCUMENT ID: 437 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Semicolon.html
+DOCUMENT ID: 454 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_memory.html
+DOCUMENT ID: 471 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/MCP_(Burroughs_Large_Systems).html
+DOCUMENT ID: 474 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Portable_C_Compiler.html
+DOCUMENT ID: 494 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Graphical_user_interface.html
+DOCUMENT ID: 495 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Endianness.html
+DOCUMENT ID: 521 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Unicode.html
+DOCUMENT ID: 57 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Algorithmic_trading.html
+DOCUMENT ID: 576 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Buffer_overflow.html
+DOCUMENT ID: 582 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Malloc.html
+DOCUMENT ID: 590 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Type_I_and_type_II_errors.html
+DOCUMENT ID: 622 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Smalltalk.html
+DOCUMENT ID: 627 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Englewood_Cliffs%2c_NJ.html
+DOCUMENT ID: 643 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dev-C%2b%2b.html
+DOCUMENT ID: 65 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer-generated_imagery.html
+DOCUMENT ID: 663 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Microsoft_Visual_Studio.html
+DOCUMENT ID: 672 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Watcom_C/C%2b%2b_compiler.html
+DOCUMENT ID: 69 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Advertising.html
+DOCUMENT ID: 690 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Lisp_(programming_language).html
+DOCUMENT ID: 697 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Berkeley_Software_Distribution.html
+DOCUMENT ID: 717 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Novell.html
+DOCUMENT ID: 72 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Digital_camera.html
+DOCUMENT ID: 720 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/OS_X.html
+DOCUMENT ID: 721 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Linux.html
+DOCUMENT ID: 734 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Workstation.html
+DOCUMENT ID: 751 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Software_quality.html
+DOCUMENT ID: 752 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/BSD.html
+DOCUMENT ID: 756 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Solaris_(operating_system).html
+DOCUMENT ID: 76 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Fluid_dynamics.html
+DOCUMENT ID: 760 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Sun_Microsystems.html
+DOCUMENT ID: 77 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/SPICE.html
+DOCUMENT ID: 785 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/GUI.html
+DOCUMENT ID: 793 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Digital_Equipment_Corporation.html
+DOCUMENT ID: 802 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/MS-DOS.html
+DOCUMENT ID: 82 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Peter_J.html
+DOCUMENT ID: 827 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/FreeBSD.html
+DOCUMENT ID: 84 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Engineering.html
+DOCUMENT ID: 843 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Mandriva_Linux.html
+DOCUMENT ID: 854 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Free_Software_Foundation.html
+DOCUMENT ID: 857 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Year_2038_problem.html
+DOCUMENT ID: 873 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/License_plate.html
+DOCUMENT ID: 892 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Anglo-Saxon_language.html
+DOCUMENT ID: 90 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Slavic_languages.html
+DOCUMENT ID: 96 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Information_systems.html
+
+
+Query:> 
+
+
+
+Below, we unit test each of the important functions used to build query.
+
+Test GetLinks Test case 1 passed
+Test GetLinks Test case 2 passed
+Test GetLinks Test case 3 passed
+Test GetLinks Test case 4 passed
+Test GetLinks Test case 5 passed
+Test GetLinks Test case 6 passed
+Test GetLinks Test case 7 passed
+Test And Test case 1 passed
+Test And Test case 2 passed
+Test And Test case 3 passed
+Test Or Test case 1 passed
+Test Or Test case 2 passed
+Test Sort Test case 1 passed
+DOCUMENT ID: 1467 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/St._John%27s_College_(Annapolis/Santa_Fe).html
+DOCUMENT ID: 1460 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Boston_College.html
+DOCUMENT ID: 160 URL: http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Computer_architecture.html
+Test Display Test case 1 passed
+All passed!
+
+
+Build End: Sun Aug 16 23:52:56 EDT 2015

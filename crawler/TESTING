@@ -1,0 +1,64 @@
+Below is a summary of tests done using crawlerTest.sh and crawlerTestlog.`date +"%a_%b_%d_%T_%Y"`.
+Please refer to the two files for details.
+The makefile used for this assignment is 'Makefile'. 
+
+Boundary Cases
+a) Case of not 3 arguments
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data
+Please input three parameters: seed URL, directory, and max depth.
+
+b) Case of the seed URL having improper domain
+
+./crawler http://www.cs.dartmouth.edu/~cs50/tse/ ./data 0
+The seed URL domain must be old-www.
+
+c) Case of a nonexistent directory
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./abcdef 0
+The directory ./abcdef cannot be found. Please enter an existing directory.
+
+d) Case of invalid directory path format.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data/ 0
+Please do not add '/' at the end of the directory path.
+
+e) Case of an invalid number passed as depth
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 1a
+Please input a valid number for the depth.
+
+f) Case of the passed depth exceeding MAX DEPTH of 4.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 5
+Search depth cannot exceed MAX depth of 4. Please enter a valid depth.
+
+g) Case of when the seed URL is invalid, ie dead link. 
+
+./crawler http://old-www.cs.dartmouth.edu/deadlink.html ./data 1
+The seed URL is invald. Please enter a valid seed URL.
+
+
+
+Good Output - (below is the number of files created)
+	For previews of files created, please refer to the crawlerTestlog file.
+	
+a) Depth 0
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 0
+1
+
+b) Depth 1
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 1
+7
+
+c) Depth 2
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 2
+1705
+
+d) Depth 3
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 3
+1705

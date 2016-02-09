@@ -1,0 +1,40 @@
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are either 2 or 3 arguments passed.
+2. This program checks that the TARGET_DIRECTORY exists.
+3. This program checks that the TARGET_DIRECTORY is not empty.
+4. This program checks that the "index.dat" and the "new_index.dat" files are valid (ie, they exist).
+5. This program checks that the "index.dat" and the "new_index.dat" files are empty.
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that the crawler ran successfully, stored all the webpages into ./data, 
+and each file name is a unique integer starting from 1. I copied over the crawler code to 
+Lab5/Crawler. 
+
+2. The ./data directory containing all the crawled webpages is also located at Lab5/Crawler.
+
+3. Just like in Crawler, I assumed that the ./data directory does not have a final '/' at the end.
+The crawler and the indexer add a '/' at the end when parsing.
+
+4. I assumed that the ./data directory has read permissions and can be opened.
+
+5. I assumed that the "index.dat" and the "new_index.dat" files are empty, or if not, that their contents are not important.
+The program prints out a warning message and overwrites the files.
+
+6. I assumed that the "index.dat" file and the "new_index.dat" file both have the necessary
+permissions (read and write).
+
+7. For the index, I used a HashTable of HashTableNode pointers which contain the (void *) data pointer.
+This (void *) data points to any WordNode pointers.
+
+8. For convenience, when I initialize the HashTable, I create and initialize empty HashTableNode pointers as well.
+Thus, when I check for an empty bin, I check that its HashTableNode's (void *)data == NULL.
+
+9. For BATS.sh, I assumed that index.dat and new_index.dat already exist and contain the index information.
+
+10. In this program, I used a hash table as the structure for the InvertedIndex. I used InvertedIndex and HashTable interchangeably in some comments.

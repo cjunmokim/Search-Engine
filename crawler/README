@@ -1,0 +1,39 @@
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are three input parameters.
+2. This program checks that the seed url has the proper domain.
+3. This program checks that the directory exists.
+4. This program checks that the directory path doesn't include the final '/' (for creating filename purposes).
+5. This program checks that the depth passed is a number.
+6. This program checks that the depth passed is equal to or less than the MAX DEPTH.
+7. This program checks that seed URL is a valid email address.
+8. This program checks that the seed URL can be normalized.
+
+
+
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that for the seed URL, the user would input a url ending with a '/'.
+2. I assumed that the directory passed has the read and write permissions.
+3. I assumed that the directory passed is empty.
+4. I added an additional '/' to the constant URL_PREFIX.
+5. I fixed the given html parser for redirection and references to different parts of the html page.
+	Therefore, I should get the following number of files for each depth: 
+	0		1
+	1		7
+	2		1705
+	3		1705
+6. I assumed that the hash function is good enough, so that there are not more than 100 collisions per slot.
+7. I have included a few print statements for convenience to know which url is being curled.
+	First, the program prints out the url being crawled, and then the urls found from crawling the first url.
+	Due to the way I wrote the program, the print statement of the url being crawled will only appear if
+	the depth is less than the depth passed. Thus, for a depth of 0, since the program should not
+	crawl the seed URL, no statement gets printed to stdout.
+8. The print statements have been muted in the test bash script, instead just printing the necessary information
+	to the log file.
+9. For crawlerTest.sh, I assumed that there would already be an existing, empty ./data directory.

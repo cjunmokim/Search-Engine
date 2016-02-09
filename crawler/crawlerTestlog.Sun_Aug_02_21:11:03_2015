@@ -1,0 +1,111 @@
+BOUNDARY CASES.
+An appropriate error message will be printed for each case.
+
+1.
+This tests for the case where the number of arguments passed is not 3.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data
+Please input three parameters: seed URL, directory, and max depth.
+
+2.
+This tests for the case where the seed URL doesn't have the old-www domain.
+The program should throw an error.
+
+./crawler http://www.cs.dartmouth.edu/~cs50/tse/ ./data 0
+The seed URL domain must be old-www.
+
+3.
+This tests for the case where the directory passed does not exist. './abcdef' does not exist on my machine.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./abcdef 0
+The directory ./abcdef cannot be found. Please enter an existing directory.
+
+4.
+This tests for the case where the directory format is wrong, ie there is a '/' at the end of the path.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data/ 0
+Please do not add '/' at the end of the directory path.
+
+5.
+This tests for the case where the depth passed is invalid, ie not an integer number.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 1a
+Please input a valid number for the depth.
+
+6.
+This tests for the case where the depth passed is greater than the MAX DEPTH of 4.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 5
+Search depth cannot exceed MAX depth of 4. Please enter a valid depth.
+
+7.
+This tests for the case where the seed URL is a dead link, or throws other >400 errors.
+The url http://old-www.cs.dartmouth.edu/deadlink.html passed is a dead link.
+The program should throw an error.
+
+./crawler http://old-www.cs.dartmouth.edu/deadlink.html ./data 1
+The seed URL is invald. Please enter a valid seed URL.
+
+
+
+GOOD OUTPUTS.
+The last line of 'ls' will be shown to show how many files have been created.
+The first 4 lines of a sample file will also be printed to show how each created file should look like.
+
+8.
+This tests for depth 0.
+Only the seed URL file should be created, with the filename 1.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 0
+1
+
+Preview of ./1
+http://old-www.cs.dartmouth.edu/~cs50/tse/
+0
+<!-- Note: Template file not found, using internal one -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+9.
+This tests for depth 1.
+7 files should be created, 1 for depth 0, and 6 for depth 1.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 1
+7
+
+Preview of ./5
+http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Dartmouth_College.html
+1
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+
+10.
+This tests for depth 2.
+1705 files should be created, 1 for depth 0, 6 for depth 1, and 1698 for depth 2.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 2
+1705
+
+Preview of ./532
+http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Operators_in_C_and_C%2b%2b.html
+2
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+
+11.
+This tests for depth 3.
+1705 files should be created, 1 for depth 0, 6 for depth 1, 1698 for depth 2, and 0 for depth 3.
+
+./crawler http://old-www.cs.dartmouth.edu/~cs50/tse/ ./data 3
+1705
+
+Preview of ./1000
+http://old-www.cs.dartmouth.edu/~cs50/tse/wiki/Yes_(Unix).html
+2
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+

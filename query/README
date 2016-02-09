@@ -1,0 +1,47 @@
+---------------------
+Defensive Programming
+---------------------
+
+1. This program checks that there are 2 arguments passed.
+2. This program checks that the [INDEX_FILE] exists.
+3. This program checks that the [HTML_DIRECTORY] exists.
+4. This program checks that the query line is not empty.
+5. This program checks that the query line only contains ASCII characters separated by one whitespace.
+6. This program checks for invalid input cases regarding logical operators 
+	•	successive logical operators
+	•	operator in the beginning of the query line
+	•	operator at the end of the query line
+
+
+-------------------------
+Assumptions / Disclaimers
+-------------------------
+
+1. I assumed that the Indexer ran successfully, and that the [INDEX_FILE] passed contains
+a working InvertedIndex. This [INDEX_FILE] is stored in Lab6/Indexer/.
+
+2. I assumed that the Crawler ran successfully, that ./data contains all 1705 crawled webpage files,
+and that each file name is a unique integer starting from 1. This [HTML_DIRECTORY] is stored in
+Lab6/Crawler/. 
+
+3. I assumed that [HTML_DIRECTORY] will be inputted without the final '/' for correct parsing.
+
+4. I assumed that the [INDEX_FILE] and the [HTML_DIRECTORY] both have appropriate permissions.
+
+5. I assumed that each query follows the following format: word1 [OPERATOR] word 2 etc.
+I assumed that each word or operator is separated by one whitespace ' '.
+
+6. To compute rank for words joined by AND, I added the frequencies up.
+
+7. To compute rank for words joined by OR, I took the maximum of the frequencies.
+
+8. The query line can be at most 1000 characters long.
+
+9. Since crawler, indexer, and query use common files, but with minor changes, I had to
+to change the names of a few in order to make them from a single Makefile. For such files, 
+I put a 'c', 'i', and 'q' to indicate the files are for crawler, indexer, and query 
+respectively. For example, for query, hashtable.c --> qhashtable.c.
+
+10. In my Unit Testing file, queryengine_test.c, I test my display() function that displays
+list of matching doc ids and urls to stdout. I did not mute the output to stdout, so 
+in the output of queryengine_test.c, please ignore the three lines of doc ids & urls.
