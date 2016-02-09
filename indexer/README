@@ -14,9 +14,9 @@ Assumptions / Disclaimers
 
 1. I assumed that the crawler ran successfully, stored all the webpages into ./data, 
 and each file name is a unique integer starting from 1. I copied over the crawler code to 
-Lab5/Crawler. 
+../crawler. 
 
-2. The ./data directory containing all the crawled webpages is also located at Lab5/Crawler.
+2. The ./data directory containing all the crawled webpages is also located at ../crawler.
 
 3. Just like in Crawler, I assumed that the ./data directory does not have a final '/' at the end.
 The crawler and the indexer add a '/' at the end when parsing.
