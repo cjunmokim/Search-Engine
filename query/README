@@ -18,11 +18,11 @@ Assumptions / Disclaimers
 -------------------------
 
 1. I assumed that the Indexer ran successfully, and that the [INDEX_FILE] passed contains
-a working InvertedIndex. This [INDEX_FILE] is stored in Lab6/Indexer/.
+a working InvertedIndex. This [INDEX_FILE] is stored in ../indexer/.
 
 2. I assumed that the Crawler ran successfully, that ./data contains all 1705 crawled webpage files,
 and that each file name is a unique integer starting from 1. This [HTML_DIRECTORY] is stored in
-Lab6/Crawler/. 
+../crawler/. 
 
 3. I assumed that [HTML_DIRECTORY] will be inputted without the final '/' for correct parsing.
 
