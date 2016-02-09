@@ -1,6 +1,6 @@
 # Search-Engine
 
-This is a search engine, as per my project in the Software Implementation class at Dartmouth College.
+This is a miniature search engine like Google's, as per my project in the Software Implementation class at Dartmouth College.
 The search engine is divided into 3 parts: Crawler, Indexer, and Query Engine.
 Each of the three respective folders has its own Makefile and code that can be run,
 but for ease follow the follwing steps to run the query engine, which combines all three parts.
